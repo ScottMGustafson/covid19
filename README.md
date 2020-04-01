@@ -5,7 +5,7 @@ As a side project, I decided to play around with some monte carlo techniques to 
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
 I'm just a data scientist who thought that this would make for a good weekend project.
-As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices actually should be and I have not validated this model with data.
+As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices should actually be since I haven't validated this model with data.
 
 ### Overview and Assumptions
 In these simulations, I treat people as points in a box moving at random existing in one a a few states: susceptible, infected, immune (i.e. recovered) or dead.
