@@ -4,7 +4,7 @@ As a side project, I decided to play around with some monte carlo techniques to 
 
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
-I'm just a data scientist who thought that this would make for a fun weekend project.
+I'm just a data scientist who thought that this would make for a good weekend project.
 As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices actually should be and I have not validated this model with data.
 
 ### Overview and Assumptions
@@ -28,7 +28,7 @@ We also see in aggregate over 400 realizations the infection/recovery/dead curve
 
 ![aggregate_png](https://github.com/scottmgustafson/covid19/raw/master/assets/covid19_sim.png)
 
-I chose parameters to make the curve pretty rather the to match Covid's actual spread.  
+I chose parameters to make the curve pretty rather than to match Covid's actual spread.  
 While the code does support randomly adding and removing people (i.e. travel), here I kept the population isolated at 400 initial members.
 In this case, we see the disease dies out in about three months with about 5-6% dying out.
 
