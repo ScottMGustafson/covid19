@@ -60,7 +60,7 @@ class LegendObject(object):
         return patch
 
 
-def plot_curve(df):
+def plot_curve(df, **kwargs):
     bg = np.array([1, 1, 1])  # background of the legend is white
     colors = ["black", "red", "green", "blue", "purple"]
     cols = ["dead", "infected", "immune", "total", "susceptible"]
@@ -68,7 +68,7 @@ def plot_curve(df):
     # with alpha = .5, the faded color is the average of the background and color
     colors_faded = [(np.array(cc.to_rgb(color)) + bg) / 2.0 for color in colors]
 
-    fig = plt.figure(1, figsize=(7, 4))
+    fig = plt.figure(1, figsize=kwargs.get("figsize", (7, 4)))
 
     def get_mean_bounds(df, col):
         mean = df[f"{col} mean"]
@@ -86,9 +86,14 @@ def plot_curve(df):
     plt.legend([i for i in range(len(colors))], cols, handler_map=handler_map)
     plt.xlabel("time (days)")
     plt.ylabel("num people")
+    plt.title(kwargs.get("title"))
     plt.tight_layout()
     plt.grid()
-    plt.show()
+    if kwargs.get("output_plot"):
+        plt.savefig(kwargs.get("output_plot"))
+    else:
+        plt.show()
+    plt.close()
 
 
 def augment(arr, numsteps):
@@ -120,7 +125,9 @@ def create_animation(all_steps_lst, total_frames=400, fps=20, **kwargs):
         alpha = 0.7
         plt.cla()
         dct = all_steps_lst[i]
-        _plot_group(dct["dead"], ax, marker="o", color="black", linestyle="", alpha=alpha)
+        _plot_group(
+            dct["dead"], ax, marker="o", color="black", linestyle="", alpha=alpha
+        )
         _plot_group(
             dct["infected"], ax, marker="o", color="red", linestyle="", alpha=alpha
         )
@@ -128,20 +135,31 @@ def create_animation(all_steps_lst, total_frames=400, fps=20, **kwargs):
             dct["immune"], ax, marker="o", color="green", linestyle="", alpha=alpha
         )
         _plot_group(
-            dct["susceptible"], ax, marker="o", color="purple", linestyle="", alpha=alpha
+            dct["susceptible"],
+            ax,
+            marker="o",
+            color="purple",
+            linestyle="",
+            alpha=alpha,
         )
         ax.set_xlim([MIN_X, MAX_X])
         ax.set_ylim([MIN_Y, MAX_Y])
         ax.get_xaxis().set_ticks([])
         ax.get_yaxis().set_ticks([])
 
-        custom_lines = [Line2D([0], [0], color="purple", lw=4, alpha=alpha),
-                        Line2D([0], [0], color="red", lw=4, alpha=alpha),
-                        Line2D([0], [0], color="green", lw=4, alpha=alpha),
-                        Line2D([0], [0], color="black", lw=4, alpha=alpha)]
+        custom_lines = [
+            Line2D([0], [0], color="purple", lw=4, alpha=alpha),
+            Line2D([0], [0], color="red", lw=4, alpha=alpha),
+            Line2D([0], [0], color="green", lw=4, alpha=alpha),
+            Line2D([0], [0], color="black", lw=4, alpha=alpha),
+        ]
 
-        ax.legend(custom_lines, ['Susceptible', 'Infected', 'Recovered', 'Dead'], loc='upper right',
-                  bbox_to_anchor=(1, 1))
+        ax.legend(
+            custom_lines,
+            ["Susceptible", "Infected", "Recovered", "Dead"],
+            loc="upper right",
+            bbox_to_anchor=(1, 1),
+        )
         # ax.legend(loc='upper right', bbox_to_anchor=(0, 0))#, ncol=4, numpoints=1)
 
     ani = matplotlib.animation.FuncAnimation(

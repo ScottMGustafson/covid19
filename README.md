@@ -24,15 +24,23 @@ For an individual realization, we can visually see the spread of the disease, wh
 
 ![Realization Gif](https://github.com/scottmgustafson/covid19/raw/master/assets/realization.gif)
 
-We also see in aggregate over 400 realizations the infection/recovery/dead curves along with one-sigma confidence intervals.
 
-![aggregate_png](https://github.com/scottmgustafson/covid19/raw/master/assets/covid19_sim.png)
+To see the impact of self-isolation, I ran these simulations over a range of isolation fractions: with an initial population of 1000, and 32 realizations each.  
 
-I chose parameters to make the curve pretty rather than to match Covid's actual spread.  
-While the code does support randomly adding and removing people (i.e. travel), here I kept the population isolated at 400 initial members.
-In this case, we see the disease dies out in about three months with about 5-6% dying out.
 
-Keep in mind, however, that **the parameters used to generate these views were arbitrary and not based on any real data**, so don't expect this to reflect reality.
+![aggregate10_png](https://github.com/scottmgustafson/covid19/raw/master/assets/10_pct.png)
+
+
+![aggregate50_png](https://github.com/scottmgustafson/covid19/raw/master/assets/50_pct.png)
+
+
+![aggregate75_png](https://github.com/scottmgustafson/covid19/raw/master/assets/75_pct.png)
+
+With no people coming into or out of the box (this was turned off for these simulations) we can clearly see the infection curve flattening and elongating as the social distancing percentages increase.
+
+![aggregate75_png](https://github.com/scottmgustafson/covid19/raw/master/assets/max_infect.png)
+
+Keep in mind, however, that **the other parameters used here views were arbitrary and not validated on real data**, so I don't claim that these simulations reflect reality, though they do make clear the point that practicing social distancing can indeed help flatten the curve, as expected.
 
 ## Getting Started
 Set your parameters as desired. These parameters were used to generate the above views.

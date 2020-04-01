@@ -257,7 +257,7 @@ class Patient:
         patients : list(Patient)
             list of patients
         partial_isolate : bool
-            if true, include some fraction of the hermits at random
+            if true, include some fraction of the hermits at random in each step
         frac : float < 1
             fraction of hermits who still have to interact anyway this round
 
@@ -271,7 +271,7 @@ class Patient:
             if not patients[i].is_dead and not patients[i].isolate
         ]
         if partial_isolate:
-            _lst = [i for i in range(len(patients)) if not patients[i].isolate]
+            _lst = [i for i in range(len(patients)) if patients[i].isolate]
             isolate_ind = list(np.random.choice(_lst, size=int(frac * len(_lst))))
             ind_lst = list(set(isolate_ind + ind_lst))
         for i in ind_lst:
