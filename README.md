@@ -1,13 +1,35 @@
 #covid19 infections
 
-Simulates the spread of covid19 infections utilising Monte Marlo methods
+Simulates the spread of covid19 infections utilising Monte Marlo methods.
+
+### Disclaimer
+I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
+I'm just a data scientist who thought that this would make for a fun weekend project.
+As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are and I have not validated this model with data.
+
+### Overview
+In these simulations, I treat people as points in a box moving at random existing in one a a few states: susceptible, infected, immune (i.e. recovered) or dead.
+The people are given an initial position and velocity.
+When any two or more people get close enough, they interact may get infected with some probability determined by a randomly generated infection probability score and by distance following an inverse square law.
+Some fraction of people will practice social distancing, where they stay put and other people will pass right through them *most* of the time rather than interact.
+Some fraction of self-isolating people will still randomly interact with people, but the majority of passers-byers will just pass through them without interaction.
+The thought here was that people practicing social distancing may not *completely* cut themselves off of everyone else.
+They may make exceptions for certain family members and loved ones.
+
+The infection length, initial positions, and velocities are randomized for each individual following a Normal distribution.
+The infection severity score, infection probability score were generated from a normal distribution, but I took the absolute value of the score and clipped it to be within the range [0, 1].
+
+For an individual realization, we can visually see the spread of the disease, while there are a few holdouts who practice social distancing and never get infected.
 
 ![Realization Gif](https://github.com/scottmgustafson/covid19/raw/master/assets/realization.gif)
 
+We also see in aggregate over 400 realizations the infection/recovery/dead curves along with one-sigma confidence intervals.
+
 ![aggregate_png](https://github.com/scottmgustafson/covid19/raw/master/assets/covid19_sim.png)
 
+
 ## Getting Started
-Set your parameters as desired:
+Set your parameters as desired. These parameters were used to generate the above views.
 
  ```python
 params = dict(
@@ -28,7 +50,7 @@ params = dict(
     proactive_isolate_frac=0.01,
 )
 ```
-The parameters were used for the realization seen in the above views.
+
 
 To run your simulations and get aggregated views over n simulations: 
 ```python
@@ -58,11 +80,11 @@ run_sim.run_sim_for_animation(**params)
 |    severity_score_std | std of infection severity among  population | 
 |    infection_length_mean | mean of infection length (days) assuming normal distribution|
 |    infection_length_std | stdev infection length (days) |
-|    infection_prob_mean | *mean of infection probability among population (clipped to 0,1 of absolute value) |
+|    infection_prob_mean | mean of infection probability among population (clipped to 0,1 of absolute value) |
 |    infection_prob_std |  stdev of infection probability among population | 
-|    proactive_isolate_frac | **fraction of people who proactively self isolate (0->1)|
+|    proactive_isolate_frac | fraction of people who proactively self isolate (0->1)|
 
  > *Note: this is the max infection probability when one person is directly on top of another at interaction. 
 >This probability goes down following an inverse square law with distance.
 
- > **Note: some fraction of self-isolating people sill still randomly interact with people, but the majority of passers-byers will just pass through them without interaction.
+ 
