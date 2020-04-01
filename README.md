@@ -5,9 +5,9 @@ Simulates the spread of covid19 infections utilising Monte Marlo methods.
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
 I'm just a data scientist who thought that this would make for a fun weekend project.
-As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are and I have not validated this model with data.
+As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices actually should be and I have not validated this model with data.
 
-### Overview
+### Overview and Assumptions
 In these simulations, I treat people as points in a box moving at random existing in one a a few states: susceptible, infected, immune (i.e. recovered) or dead.
 The people are given an initial position and velocity.
 When any two or more people get close enough, they interact may get infected with some probability determined by a randomly generated infection probability score and by distance following an inverse square law.
@@ -26,7 +26,7 @@ For an individual realization, we can visually see the spread of the disease, wh
 We also see in aggregate over 400 realizations the infection/recovery/dead curves along with one-sigma confidence intervals.
 
 ![aggregate_png](https://github.com/scottmgustafson/covid19/raw/master/assets/covid19_sim.png)
-
+Keep in mind, however, that **the parameters used to generate these views were arbitrarily chosen to produce pretty views** so please, don't trust this to have any bearing on reality!
 
 ## Getting Started
 Set your parameters as desired. These parameters were used to generate the above views.
