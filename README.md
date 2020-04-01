@@ -1,6 +1,6 @@
-#covid19 infections
+# Simulating the spread of COVID-19
 
-Simulates the spread of covid19 infections utilising Monte Marlo methods.
+As a side project, I decided to play around with some monte carlo techniques to roughly model the spread of an infection disease.  
 
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
