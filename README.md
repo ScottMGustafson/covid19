@@ -19,6 +19,7 @@ They may make exceptions for certain family members and loved ones.
 The infection length, initial positions, and velocities are randomized for each individual following a Normal distribution.
 The infection severity score, infection probability score were generated from a normal distribution, but I took the absolute value of the score and clipped it to be within the range [0, 1].
 
+### Results for a one set of realizations
 For an individual realization, we can visually see the spread of the disease, while there are a few holdouts who practice social distancing and never get infected.
 
 ![Realization Gif](https://github.com/scottmgustafson/covid19/raw/master/assets/realization.gif)
@@ -26,7 +27,12 @@ For an individual realization, we can visually see the spread of the disease, wh
 We also see in aggregate over 400 realizations the infection/recovery/dead curves along with one-sigma confidence intervals.
 
 ![aggregate_png](https://github.com/scottmgustafson/covid19/raw/master/assets/covid19_sim.png)
-Keep in mind, however, that **the parameters used to generate these views were arbitrarily chosen to produce pretty views** so please, don't trust this to have any bearing on reality!
+
+I chose parameters to make the curve pretty rather the to match Covid's actual spread.  
+While the code does support randomly adding and removing people (i.e. travel), here I kept the population isolated at 400 initial members.
+In this case, we see the disease dies out in about three months with about 5-6% dying out.
+
+Keep in mind, however, that **the parameters used to generate these views were arbitrary and not based on any real data**, so don't expect this to reflect reality.
 
 ## Getting Started
 Set your parameters as desired. These parameters were used to generate the above views.
@@ -53,6 +59,7 @@ params = dict(
 
 
 To run your simulations and get aggregated views over n simulations: 
+
 ```python
 import run_sim
 run_sim.run_all(params, n_proc=8, n_iter=16)
@@ -64,27 +71,22 @@ To Generate an animation of an individual realization:
 run_sim.run_sim_for_animation(**params)
 ```
 
-## Parameters
+### List of Parameters for `run_sim`
 
 | **Parameter Name** | **meaning**   |  
 |--------------------|---|
-| n                  |  initial population size |
-| steps              |  number of days  |
-| initially_infected |  number of initially infected people |
-|    mu_add_at_step | poisson mean to add new people at each step |
-|    mu_remove_at_step | poisson mean to remove non-dead people at each step |
-|    vel_std | stdev of velocity of our people |
-|    mortality_thresh | severity threshold before death (0->1)|
-|    isolate_thresh | severity threshold before self isolation (0->1)|
-|    severity_score_mean | mean of infection severity among population (clipped to 0,1 of absolute value) | 
-|    severity_score_std | std of infection severity among  population | 
-|    infection_length_mean | mean of infection length (days) assuming normal distribution|
-|    infection_length_std | stdev infection length (days) |
-|    infection_prob_mean | mean of infection probability among population (clipped to 0,1 of absolute value) |
-|    infection_prob_std |  stdev of infection probability among population | 
-|    proactive_isolate_frac | fraction of people who proactively self isolate (0->1)|
-
- > *Note: this is the max infection probability when one person is directly on top of another at interaction. 
->This probability goes down following an inverse square law with distance.
-
- 
+| `n`                 |  initial population size |
+| `steps`         |  number of days  |
+| `initially_infected` |  number of initially infected people |
+|    `mu_add_at_step` | poisson mean to add new people at each step |
+|    `mu_remove_at_step` | poisson mean to remove non-dead people at each step |
+|    `vel_std` | stdev of velocity of our people |
+|    `mortality_thresh` | severity threshold before death (0->1)|
+|    `isolate_thresh` | severity threshold before self isolation (0->1)|
+|    `severity_score_mean` | mean of infection severity among population (clipped to 0,1 of absolute value) | 
+|    `severity_score_std` | std of infection severity among  population | 
+|    `infection_length_mean` | mean of infection length (days) assuming normal distribution|
+|    `infection_length_std` | stdev infection length (days) |
+|    `infection_prob_mean` | mean of infection probability among population (clipped to 0,1 of absolute value) |
+|    `infection_prob_std` |  stdev of infection probability among population | 
+|    `proactive_isolate_frac` | fraction of people who proactively self isolate (0->1)|
