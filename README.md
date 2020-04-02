@@ -11,6 +11,7 @@ As such, do not take any of my calculations seriously--I have no idea as to how 
 In these simulations, I treat people as points in a box moving at random existing in one a a few states: susceptible, infected, immune (i.e. recovered) or dead.
 The people are given an initial position and velocity.
 When any two or more people get close enough, they interact may get infected with some probability determined by a randomly generated infection probability score and by distance following an inverse square law.
+
 Some fraction of people will practice social distancing, where they stay put and other people will pass right through them *most* of the time rather than interact.
 Some fraction of self-isolating people will still randomly interact with people, but the majority of passers-byers will just pass through them without interaction.
 The thought here was that people practicing social distancing may not *completely* cut themselves off of everyone else.
@@ -19,14 +20,13 @@ They may make exceptions for certain family members and loved ones.
 The infection length, initial positions, and velocities are randomized for each individual following a Normal distribution.
 The infection severity score, infection probability score were generated from a normal distribution, but I took the absolute value of the score and clipped it to be within the range [0, 1].
 
-### Results for a one set of realizations
+### Results
 For an individual realization, we can visually see the spread of the disease, while there are a few holdouts who practice social distancing and never get infected.
 
 ![Realization Gif](https://github.com/scottmgustafson/covid19/raw/master/assets/realization.gif)
 
 
 To see the impact of self-isolation, I ran these simulations over a range of isolation fractions: with an initial population of 1000, and 32 realizations each.  
-
 
 ![aggregate10_png](https://github.com/scottmgustafson/covid19/raw/master/assets/10_pct.png)
 
@@ -40,9 +40,17 @@ With no people coming into or out of the box (this was turned off for these simu
 
 ![aggregate75_png](https://github.com/scottmgustafson/covid19/raw/master/assets/max_infect.png)
 
-Keep in mind, however, that **the other parameters used here views were arbitrary and not validated on real data**, so I don't claim that these simulations reflect reality, though they do make clear the point that practicing social distancing can indeed help flatten the curve, as expected.
+Eventhough **these input parameters were arbitrary and not validated on real data**, these simulations still clearly point to the general idea that social distancing is an effective way of curbing the spread of infectious disease, which ultimately means that healthcare professionals will have more resources and bandwidth to treat their patients.
 
-## Getting Started
+One shortcoming of this model is that the mortality rate is just randomly sampled from a statistical distribution that will be the same regardless of other factors.
+In real life, the mortality rate of COVID-19 will obviously depend on many factors, perhaps most important being access to proper medical care.
+
+An overburdened hospital can't properly care for their patients: If they can't properly care for their patients, **many more people will unnecessarily die.**
+We can reduce the burden on our hospitals by staying home and reducing social interactions.
+Physically cutting ourselves off from friends and family sucks, I know, but it does in fact slow the spread of disease.
+
+
+## Getting Started Using the Code
 Set your parameters as desired. These parameters were used to generate the above views.
 
  ```python

@@ -202,7 +202,7 @@ def iterate_through_proactive_isolate():
         partial_isolate_frac=0.4,
     )
 
-    for proactive_isolate_frac in [0.5, 0.75, 0.9]:
+    for proactive_isolate_frac in [0.3, 0.4, 0.6, 0.7, 0.8]:
         params["proactive_isolate_frac"] = proactive_isolate_frac
         pct = 100 * proactive_isolate_frac
         run_all(
