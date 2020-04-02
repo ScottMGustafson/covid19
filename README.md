@@ -8,7 +8,7 @@ I'm just a data scientist who thought that this would make for a good weekend pr
 As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices should actually be since I haven't validated this model with data.
 
 ### Overview and Assumptions
-In these simulations, I treat people as points in a box moving at random existing in one a a few states: susceptible, infected, immune (i.e. recovered) or dead.
+In these simulations, I treat people as points in a box moving at random existing in one a few states: susceptible, infected, immune (i.e. recovered) or dead.
 The people are given an initial position and velocity.
 When any two or more people get close enough, they interact may get infected with some probability determined by a randomly generated infection probability score and by distance following an inverse square law.
 
@@ -40,11 +40,10 @@ With no people coming into or out of the box (this was turned off for these simu
 
 ![aggregate75_png](https://github.com/scottmgustafson/covid19/raw/master/assets/max_infect.png)
 
-Eventhough **these input parameters were arbitrary and not validated on real data**, these simulations still clearly point to the general idea that social distancing is an effective way of curbing the spread of infectious disease, which ultimately means that healthcare professionals will have more resources and bandwidth to treat their patients.
+Eventhough **these input parameters were arbitrary and not validated on real data**, these simulations still clearly point to the general idea that social distancing is an effective way of curbing the spread of infectious disease.
 
 One shortcoming of this model is that the mortality rate is just randomly sampled from a statistical distribution that will be the same regardless of other factors.
 In real life, the mortality rate of COVID-19 will obviously depend on many factors, perhaps most important being access to proper medical care.
-
 An overburdened hospital can't properly care for their patients: If they can't properly care for their patients, **many more people will unnecessarily die.**
 We can reduce the burden on our hospitals by staying home and reducing social interactions.
 Physically cutting ourselves off from friends and family sucks, I know, but it does in fact slow the spread of disease.
