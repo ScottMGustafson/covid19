@@ -3,9 +3,7 @@ from covid.model import Virus
 
 def test_step():
     length = 10
-    virus = Virus(
-        infection_severity=1, infection_length=length, infection_prob=1.0, active=False
-    )
+    virus = Virus(infection_severity=1, infection_length=length, infection_prob=1.0, active=False)
     virus.t = 3
     virus.active = True
     virus.immune = False
@@ -16,9 +14,7 @@ def test_step():
 
 
 def test_step_finish():
-    virus = Virus(
-        infection_severity=1, infection_length=10, infection_prob=1.0, active=False
-    )
+    virus = Virus(infection_severity=1, infection_length=10, infection_prob=1.0, active=False)
     virus.t = 1
     virus.active = True
     virus.immune = False
@@ -30,9 +26,7 @@ def test_step_finish():
 
 
 def test_step_inactive():
-    virus = Virus(
-        infection_severity=1, infection_length=10, infection_prob=1.0, active=False
-    )
+    virus = Virus(infection_severity=1, infection_length=10, infection_prob=1.0, active=False)
     virus.t = 100
     virus.active = False
     virus.step()

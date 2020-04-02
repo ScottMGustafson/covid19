@@ -46,9 +46,7 @@ def test_dies():
         1,
         1,
         1,
-        infection=Virus(
-            infection_severity=1.0, infection_length=10, active=True, immune=False
-        ),
+        infection=Virus(infection_severity=1.0, infection_length=10, active=True, immune=False),
         _is_dead=False,
         mortality_thresh=0.1,
         isolate_thresh=0.1,

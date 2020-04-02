@@ -1,5 +1,5 @@
 """Visualization functions"""
-
+# pylint: disable=C0103,W0613
 import os
 
 import matplotlib
@@ -10,7 +10,7 @@ import numpy as np
 from matplotlib.colors import colorConverter as cc
 from matplotlib.lines import Line2D
 
-from covid.config import MAX_X, MAX_Y, MIN_X, MIN_Y, data_path
+from covid.config import MAX_X, MAX_Y, MIN_X, MIN_Y, DATA_PATH
 
 
 def plot_mean_and_ci(mean, lb, ub, color_mean=None, color_shading=None):
@@ -68,7 +68,7 @@ def plot_curve(df, **kwargs):
     # with alpha = .5, the faded color is the average of the background and color
     colors_faded = [(np.array(cc.to_rgb(color)) + bg) / 2.0 for color in colors]
 
-    fig = plt.figure(1, figsize=kwargs.get("figsize", (7, 4)))
+    _ = plt.figure(1, figsize=kwargs.get("figsize", (7, 4)))
 
     def get_mean_bounds(df, col):
         mean = df[f"{col} mean"]
@@ -79,9 +79,7 @@ def plot_curve(df, **kwargs):
         mu, ub, lb = get_mean_bounds(df, col)
         plot_mean_and_ci(mu, ub, lb, color_mean=color, color_shading=color)
 
-    handler_map = {
-        i: LegendObject(colors[i], colors_faded[i]) for i in range(len(colors))
-    }
+    handler_map = {i: LegendObject(colors[i], colors_faded[i]) for i in range(len(colors))}
 
     plt.legend([i for i in range(len(colors))], cols, handler_map=handler_map)
     plt.xlabel("time (days)")
@@ -110,8 +108,7 @@ def augment(arr, numsteps):
 
 
 def create_animation(all_steps_lst, total_frames=400, fps=20, **kwargs):
-    Writer = animation.writers["ffmpeg"]
-    writer = Writer(fps=fps, metadata=dict(artist="Me"), bitrate=1800)
+    writer = animation.writers["ffmpeg"](fps=fps, metadata=dict(artist="Me"), bitrate=1800)
     fig, ax = plt.subplots(1, figsize=(10, 10))
     ax.set_xlim([MIN_X, MAX_X])
     ax.set_ylim([MIN_Y, MAX_Y])
@@ -125,22 +122,11 @@ def create_animation(all_steps_lst, total_frames=400, fps=20, **kwargs):
         alpha = 0.7
         plt.cla()
         dct = all_steps_lst[i]
+        _plot_group(dct["dead"], ax, marker="o", color="black", linestyle="", alpha=alpha)
+        _plot_group(dct["infected"], ax, marker="o", color="red", linestyle="", alpha=alpha)
+        _plot_group(dct["immune"], ax, marker="o", color="green", linestyle="", alpha=alpha)
         _plot_group(
-            dct["dead"], ax, marker="o", color="black", linestyle="", alpha=alpha
-        )
-        _plot_group(
-            dct["infected"], ax, marker="o", color="red", linestyle="", alpha=alpha
-        )
-        _plot_group(
-            dct["immune"], ax, marker="o", color="green", linestyle="", alpha=alpha
-        )
-        _plot_group(
-            dct["susceptible"],
-            ax,
-            marker="o",
-            color="purple",
-            linestyle="",
-            alpha=alpha,
+            dct["susceptible"], ax, marker="o", color="purple", linestyle="", alpha=alpha,
         )
         ax.set_xlim([MIN_X, MAX_X])
         ax.set_ylim([MIN_Y, MAX_Y])
@@ -162,10 +148,6 @@ def create_animation(all_steps_lst, total_frames=400, fps=20, **kwargs):
         )
         # ax.legend(loc='upper right', bbox_to_anchor=(0, 0))#, ncol=4, numpoints=1)
 
-    ani = matplotlib.animation.FuncAnimation(
-        fig, plot_points, frames=total_frames, repeat=True
-    )
-    output_file = kwargs.get(
-        "output_file", os.path.join(data_path, "covid_interactions.mp4")
-    )
+    ani = matplotlib.animation.FuncAnimation(fig, plot_points, frames=total_frames, repeat=True)
+    output_file = kwargs.get("output_file", os.path.join(DATA_PATH, "covid_interactions.mp4"))
     ani.save(output_file, writer=writer)

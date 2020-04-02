@@ -1,5 +1,5 @@
 """The core model of a patient and virus"""
-
+# pylint: disable=C0103
 from dataclasses import dataclass
 
 import numpy as np
@@ -17,9 +17,7 @@ class Virus:
 
     def __post_init__(self):
         self.t = int(self.infection_length)
-        self.curve = self.infection_severity * Virus.get_severity_curve(
-            self.infection_length
-        )
+        self.curve = self.infection_severity * Virus.get_severity_curve(self.infection_length)
         if self.active:
             self.infect()
 
@@ -143,9 +141,7 @@ class Patient:
         if self._is_dead:
             self._isolate = True  # the dead can't move...
         elif self.infection.active:  # behavior when sick
-            self._isolate = (
-                self.infection.severity > self.isolate_thresh
-            ) or self.isolate_behavior
+            self._isolate = (self.infection.severity > self.isolate_thresh) or self.isolate_behavior
         elif self.infection.immune:
             self._isolate = False
         else:  # behavior when not sick or dead
@@ -210,9 +206,7 @@ class Patient:
         bool
             True if person can be infected.
         """
-        return all(
-            [not self.is_dead, not self.infection.immune, not self.infection.active]
-        )
+        return all([not self.is_dead, not self.infection.immune, not self.infection.active])
 
     def interact(self, other, max_dist=MAX_DIST, dist=None):
         """
@@ -266,9 +260,7 @@ class Patient:
         None
         """
         ind_lst = [
-            i
-            for i in range(len(patients))
-            if not patients[i].is_dead and not patients[i].isolate
+            i for i in range(len(patients)) if not patients[i].is_dead and not patients[i].isolate
         ]
         if partial_isolate:
             _lst = [i for i in range(len(patients)) if patients[i].isolate]

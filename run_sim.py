@@ -5,7 +5,7 @@ import os
 import numpy as np
 import pandas as pd
 
-from covid.config import data_path
+from covid.config import DATA_PATH
 from covid.model import Patient
 from covid.simulate import add_remove_patients, new_patients, randomly_infect
 from covid.visuals import create_animation, plot_curve  # , plot_points
@@ -25,15 +25,10 @@ def count_cases(patients, step=0, dct=None):
     dict
     """
     if not dct:
-        dct = {
-            k: []
-            for k in ["infected", "dead", "immune", "total", "susceptible", "step"]
-        }
+        dct = {k: [] for k in ["infected", "dead", "immune", "total", "susceptible", "step"]}
     dct["infected"].append(len([x for x in patients if x.infection.active]))
     dct["dead"].append(len([x for x in patients if x._is_dead]))
-    dct["immune"].append(
-        len([x for x in patients if x.infection.immune and not x._is_dead])
-    )
+    dct["immune"].append(len([x for x in patients if x.infection.immune and not x._is_dead]))
     dct["total"].append(len([x for x in patients if not x._is_dead]))
     dct["susceptible"].append(len([x for x in patients if x.susceptible]))
     dct["step"].append(step)
@@ -69,9 +64,7 @@ def run_sim(n, steps, mu_add_at_step, mu_remove_at_step, initially_infected, **k
 
     count_dct = count_cases(patients)
     for step in range(steps):
-        Patient.find_interactions(
-            patients, partial_isolate=True, frac=partial_isolate_frac
-        )
+        Patient.find_interactions(patients, partial_isolate=True, frac=partial_isolate_frac)
         patients = add_remove_patients(
             num_new=add_at_step[step],
             num_remove=min(remove_at_step[step], len(patients)),
@@ -108,11 +101,7 @@ def run_all(kwds, output_file, n_proc=8, n_iter=5, **plot_kwargs):
     """
     pool = mp.Pool(processes=min(mp.cpu_count(), n_proc))
     results = [pool.apply(run_sim, args=(), kwds=kwds) for x in range(n_iter)]
-    df = (
-        pd.concat(results, axis=0)
-        .groupby("step")
-        .agg(["mean", "median", "std", "count"])
-    )
+    df = pd.concat(results, axis=0).groupby("step").agg(["mean", "median", "std", "count"])
     df.columns = [" ".join(col).strip() for col in df.columns.values]
     df.to_csv(output_file, header=True)
     plot_curve(df, **plot_kwargs)
@@ -147,18 +136,17 @@ def run_sim_for_animation(**kwargs):
 
     randomly_infect(patients, kwargs.get("initially_infected", 1))
     steps = kwargs.get("steps", 100)
-    for step in range(steps):
-        Patient.find_interactions(
-            patients, partial_isolate=True, frac=partial_isolate_frac
-        )
-        for p in patients:
-            p.step()
+    for _ in range(steps):
+        Patient.find_interactions(patients, partial_isolate=True, frac=partial_isolate_frac)
+        for patient in patients:
+            patient.step()
         ret_lst.append(get_points(patients))
     create_animation(ret_lst, total_frames=steps, fps=kwargs.get("fps", 15))
     return ret_lst
 
 
 def generate_plot_and_animation():
+    """run simulations for one realization and create animation"""
     params = dict(
         n=400,
         steps=125,
@@ -177,13 +165,12 @@ def generate_plot_and_animation():
         proactive_isolate_frac=0.01,
     )
 
-    run_all(
-        params, n_proc=8, n_iter=16, output_file=os.path.join(data_path, f"results.csv")
-    )
+    run_all(params, n_proc=8, n_iter=16, output_file=os.path.join(DATA_PATH, f"results.csv"))
     run_sim_for_animation(fps=15, **params)
 
 
 def iterate_through_proactive_isolate():
+    """run sims for a bunch or realizations, iterating over `proactive_isolate_frac`"""
     params = dict(
         n=1000,
         steps=125,
@@ -209,7 +196,7 @@ def iterate_through_proactive_isolate():
             params,
             n_proc=8,
             n_iter=32,
-            output_file=os.path.join(data_path, "results_{}_pct.csv".format(pct)),
+            output_file=os.path.join(DATA_PATH, "results_{}_pct.csv".format(pct)),
             title="{}% social distancing".format(int(pct)),
             output_plot="assets/{}_pct.png".format(int(pct)),
         )

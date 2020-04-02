@@ -18,7 +18,7 @@ def new_patients(
     infection_prob_mean=1.0,
     infection_prob_std=1.0,
     proactive_isolate_frac=0.0,
-    **kwargs
+    **kwargs,
 ):
     """
     returns a list of new Patients.  Parameters are determined by statistical distributions:
@@ -69,14 +69,10 @@ def new_patients(
         [True, False], p=[proactive_isolate_frac, 1.0 - proactive_isolate_frac], size=n
     )
 
-    _severity = np.fabs(
-        np.random.normal(loc=severity_score_mean, scale=severity_score_std, size=n)
-    )
+    _severity = np.fabs(np.random.normal(loc=severity_score_mean, scale=severity_score_std, size=n))
     severity = np.clip(_severity, 0.0, 1.0)
 
-    _infect = np.fabs(
-        np.random.normal(loc=infection_prob_mean, scale=infection_prob_std, size=n)
-    )
+    _infect = np.fabs(np.random.normal(loc=infection_prob_mean, scale=infection_prob_std, size=n))
     infection_prob = np.clip(_infect, 0.0, 1.0)
     infections = [
         Virus(

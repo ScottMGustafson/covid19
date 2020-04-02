@@ -1,12 +1,16 @@
 ipykernel
 ipython
-isort
 jupyter
 matplotlib
 notebook
-pylint
 pytest
-black
 scipy
 pandas
 numpy
+pre-commit
+
+# formatting
+isort==4.3.21
+pylint==2.4.4
+flake8==3.7.9
+black==19.10b0
