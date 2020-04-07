@@ -6,7 +6,7 @@ There is nothing surprising here in my results: staying home means fewer people 
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
 I'm just a data scientist who thought that this would make for a good weekend project.
-Don't take these calculations as anymore than a toy model to satisfy the creator's curiousity.
+Please don't take these calculations too seriously.
 
 ### Overview and Assumptions
 In these simulations, I treat people as points in a box moving at random existing in one a few states: susceptible, infected, immune (i.e. recovered) or dead.
