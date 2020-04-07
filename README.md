@@ -1,16 +1,19 @@
 # Simulating the spread of COVID-19
 
-As a side project, I decided to play around with some monte carlo techniques to roughly model the spread of an infection disease.  
+As a side project, I decided to play around with some monte carlo techniques to roughly model the spread of an infection disease. 
+There is nothing surprising here in my results: staying home means fewer people get sick and fewer people die.
 
 ### Disclaimer
 I am not an epidemiologist, nor a public health expert, nor anyone who knows anything about infectious disease.  
 I'm just a data scientist who thought that this would make for a good weekend project.
-As such, do not take any of my calculations seriously--I have no idea as to how realistic any of my model assumptions are or what the parameter choices should actually be since I haven't validated this model with data.
+Don't take these calculations as anymore than a toy model to satisfy the creator's curiousity.
 
 ### Overview and Assumptions
 In these simulations, I treat people as points in a box moving at random existing in one a few states: susceptible, infected, immune (i.e. recovered) or dead.
 The people are given an initial position and velocity.
 When any two or more people get close enough, they interact may get infected with some probability determined by a randomly generated infection probability score and by distance following an inverse square law.
+
+I assume that there is only one strain of the virus and no possibility for reinfection.
 
 Some fraction of people will practice social distancing, where they stay put and other people will pass right through them *most* of the time rather than interact.
 Some fraction of self-isolating people will still randomly interact with people, but the majority of passers-byers will just pass through them without interaction.
@@ -22,6 +25,7 @@ The infection severity score, infection probability score were generated from a 
 
 ### Results
 For an individual realization, we can visually see the spread of the disease, while there are a few holdouts who practice social distancing and never get infected.
+
 
 ![Realization Gif](https://github.com/scottmgustafson/covid19/raw/master/assets/realization.gif)
 
@@ -44,19 +48,18 @@ Eventhough **these input parameters were arbitrary and not validated on real dat
 
 One shortcoming of this model is that the mortality rate is just randomly sampled from a statistical distribution that will be the same regardless of other factors.
 In real life, the mortality rate of COVID-19 will obviously depend on many factors, perhaps most important being access to proper medical care.
-An overburdened hospital can't properly care for their patients: If they can't properly care for their patients, **many more people will unnecessarily die.**
-We can reduce the burden on our hospitals by staying home and reducing social interactions.
-Physically cutting ourselves off from friends and family sucks, I know, but it does in fact slow the spread of disease.
+An overburdened hospital can't properly care for their patients and thus, more people than necessary will die.
+We can reduce the burden on our hospitals by staying home when we can and reducing social interactions.
 
 
 ## Getting Started Using the Code
-Set your parameters as desired. These parameters were used to generate the above views.
+Set your parameters as desired.  For example:
 
  ```python
 params = dict(
-    n=400,
+    n=1000,
     steps=125,
-    initially_infected=2,
+    initially_infected=4,
     mu_add_at_step=0.0,
     mu_remove_at_step=0.0,
     vel_std=0.1,
@@ -68,7 +71,7 @@ params = dict(
     infection_length_std=3.0,
     infection_prob_mean=0.8,
     infection_prob_std=0.2,
-    proactive_isolate_frac=0.01,
+    partial_isolate_frac=0.4,
 )
 ```
 
@@ -96,12 +99,20 @@ run_sim.run_sim_for_animation(**params)
 |    `mu_add_at_step` | poisson mean to add new people at each step |
 |    `mu_remove_at_step` | poisson mean to remove non-dead people at each step |
 |    `vel_std` | stdev of velocity of our people |
-|    `mortality_thresh` | severity threshold before death (0->1)|
-|    `isolate_thresh` | severity threshold before self isolation (0->1)|
+|    `mortality_thresh` | severity threshold before death (float: 0->1) |
+|    `isolate_thresh` | severity threshold before self isolation (float: 0->1) |
 |    `severity_score_mean` | mean of infection severity among population (clipped to 0,1 of absolute value) | 
 |    `severity_score_std` | std of infection severity among  population | 
 |    `infection_length_mean` | mean of infection length (days) assuming normal distribution|
 |    `infection_length_std` | stdev infection length (days) |
 |    `infection_prob_mean` | mean of infection probability among population (clipped to 0,1 of absolute value) |
 |    `infection_prob_std` |  stdev of infection probability among population | 
-|    `proactive_isolate_frac` | fraction of people who proactively self isolate (0->1)|
+|    `proactive_isolate_frac` | fraction of people who proactively self isolate (float: 0->1) . Here this means, the do not move and cannot interact with other people|
+|`partial_isolate_frac` | The exception to the above.  (float: 0->1)  Some fraction of the time, they will interact with someone nearby.  These would be exceptions for people who are self isolating, such as, when a family member or close loved one comes to visit someone who is self isolating.|
+
+### Overview of package:
+ - `run_sim.py` : top level script to run the simulations.
+ - `covid/config.py` : set some global configurations: box size, max distance to infection, output path, etc.
+ - `covid/model.py` : the underlying model used for the infection, split into two main classes: `Virus`, for the infection and `Patient` for the people
+ - `covid/simulate.py` : some control functions to manage the simulations and initialize the populations.
+ - `covid/visuals.py` : plotting functions.
