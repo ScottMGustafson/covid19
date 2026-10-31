@@ -11,6 +11,6 @@ pre-commit
 
 # formatting
 isort==4.3.21
-pylint==2.4.4
+pylint==4.0.9
 flake8==3.7.9
 black==26.10.1
